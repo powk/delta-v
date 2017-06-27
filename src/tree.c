@@ -122,6 +122,11 @@ void		receive_dir(int socketfd)
       free(name);
       exit(SOMETHING_BAD_HAPPENED);
     }
+  if (check_path_validity(name) == 0)
+    {
+      dprintf(2, "%s Bad path: %s", RED_ERROR, name);
+      exit(SOMETHING_BAD_HAPPENED);
+    }
   if (mkdir(name, mode) < 0)
     {
       dprintf(2, "%s %s: Failed to create directory\n", RED_ERROR, name);

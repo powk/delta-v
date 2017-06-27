@@ -33,6 +33,7 @@
 #define WRITE_ERROR		9
 #define	BUFFER_TOO_LARGE	10
 #define SOMETHING_BAD_HAPPENED	11
+#define FILE_CREATE_ERROR	12
 
 #define	END_NEXT		0
 #define	FILE_NEXT		1
@@ -78,5 +79,6 @@ void	delta_send(int socketfd, t_args *args);
 void	delta_receive(int socketfd, t_args *args);
 void	receive_dir(int socketfd);
 void	*get_buffer(ssize_t size);
+int	check_path_validity(char *filename);
 
 #endif	/* !DELTAV_H_ */

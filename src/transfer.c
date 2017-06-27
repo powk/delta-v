@@ -14,6 +14,15 @@ void			*get_buffer(ssize_t size)
   return (buffer);
 }
 
+int			check_path_validity(char *filename)
+{
+  if (filename[0] == '/')
+    return (0);
+  if (strstr(filename, "../"))
+    return (0);
+  return (1);
+}
+
 void			send_file(int socketfd, char *origin, char *filename)
 {
   int			len;
@@ -129,10 +138,15 @@ void			receive_file(int socketfd)
   ready = 1;
   xwrite(socketfd, &ready, sizeof(ready));	// I'm ready
 
+  if (check_path_validity(filename) == 0)
+    {
+      dprintf(2, "%s Bad path: %s", RED_ERROR, filename);
+      exit(SOMETHING_BAD_HAPPENED);
+    }
   if ((filefd = creat(filename, file_data.mode)) < 0)	// Create the file
     {
       dprintf(2, "%s Failed to create file: %s", RED_ERROR, filename);
-      exit(-1);
+      exit(FILE_CREATE_ERROR);
     }
   total_size = 0;
   finished = 0;
